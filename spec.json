@@ -1,0 +1,175 @@
+{
+  "meta": {
+    "name": "Ultra-Punch Kick Module",
+    "type": "Synthesizer / Percussion",
+    "aesthetic": "Industrial-Sci-Fi",
+    "description": "A high-impact bass drum generator inspired by SSF Eurorack logic, featuring Buchla-style wavefolding and exponential snap.",
+    "tags": [
+      "Drum Synth",
+      "Techno",
+      "Industrial",
+      "Kick",
+      "Eurorack"
+    ]
+  },
+  "dsp": {
+    "signal_chain": "MIDI Trigger -> Phase Reset -> Sine/Tri Oscillator -> Asymmetric Wavefolder -> 1ms Impulse Click -> Soft-Clip Overdrive -> Master VCA -> 6dB Tilt EQ",
+    "voice_architecture": {
+      "polyphony": 1,
+      "unison": 1,
+      "retrigger": "Instant Phase Reset",
+      "oversampling": "4x"
+    }
+  },
+  "parameters": [
+    {
+      "id": "freq_start",
+      "name": "Initial Impact",
+      "min": 100,
+      "max": 800,
+      "default": 350,
+      "unit": "Hz",
+      "curve": "exponential",
+      "description": "The transient peak frequency."
+    },
+    {
+      "id": "freq_end",
+      "name": "Body Tuning",
+      "min": 25,
+      "max": 100,
+      "default": 48,
+      "unit": "Hz",
+      "curve": "exponential",
+      "description": "The fundamental tuning of the kick tail."
+    },
+    {
+      "id": "pitch_decay",
+      "name": "Snap",
+      "min": 5,
+      "max": 150,
+      "default": 25,
+      "unit": "ms",
+      "curve": "exponential",
+      "description": "Rate of pitch descent from Impact to Body."
+    },
+    {
+      "id": "fold_amt",
+      "name": "Folding Depth",
+      "min": 0,
+      "max": 1,
+      "default": 0,
+      "unit": "",
+      "curve": "linear",
+      "description": "Multi-stage sine folding for harmonic grit."
+    },
+    {
+      "id": "bias_amt",
+      "name": "Symmetry Bias",
+      "min": -1,
+      "max": 1,
+      "default": 0,
+      "unit": "",
+      "curve": "linear",
+      "bipolar": true,
+      "description": "Offsets the signal before folding to create even harmonics."
+    },
+    {
+      "id": "stress",
+      "name": "STRESS",
+      "min": 0,
+      "max": 24,
+      "default": 0,
+      "unit": "dB",
+      "curve": "linear",
+      "description": "Macro: Drives wavefolder and soft-clipper while shortening decay."
+    },
+    {
+      "id": "click_lvl",
+      "name": "Click Transient",
+      "min": 0,
+      "max": 1,
+      "default": 0.3,
+      "unit": "",
+      "curve": "squared",
+      "description": "Amplitude of the 1ms hard-clipped impulse."
+    },
+    {
+      "id": "amp_decay",
+      "name": "Tail Decay",
+      "min": 50,
+      "max": 3000,
+      "default": 450,
+      "unit": "ms",
+      "curve": "exponential",
+      "description": "Overall length of the kick drum."
+    }
+  ],
+  "layout": {
+    "template": "split-panel",
+    "sections": [
+      {
+        "name": "Transient & Pitch",
+        "controls": [
+          {
+            "id": "freq_start",
+            "type": "Knob",
+            "size": "md"
+          },
+          {
+            "id": "pitch_decay",
+            "type": "Knob",
+            "size": "md"
+          },
+          {
+            "id": "freq_end",
+            "type": "Knob",
+            "size": "lg"
+          },
+          {
+            "id": "click_lvl",
+            "type": "Knob",
+            "size": "sm"
+          }
+        ]
+      },
+      {
+        "name": "Timbre Lab",
+        "controls": [
+          {
+            "id": "fold_bias_xy",
+            "type": "XYPad",
+            "mapping": [
+              "fold_amt",
+              "bias_amt"
+            ]
+          },
+          {
+            "id": "stress",
+            "type": "Knob",
+            "size": "lg"
+          },
+          {
+            "id": "main_view",
+            "type": "OscilloscopeDisplay",
+            "color": "#FFCC00"
+          }
+        ]
+      },
+      {
+        "name": "Output",
+        "controls": [
+          {
+            "id": "amp_decay",
+            "type": "Knob",
+            "size": "lg"
+          }
+        ]
+      }
+    ]
+  },
+  "performance": {
+    "estimated_cpu": "1.8%",
+    "oversampling": "4x",
+    "buffer_latency": "0 samples"
+  }
+}
